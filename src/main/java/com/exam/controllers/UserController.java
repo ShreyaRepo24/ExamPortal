@@ -5,6 +5,8 @@ import com.exam.models.User;
 import com.exam.models.UserRole;
 import com.exam.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -40,6 +42,17 @@ public class UserController {
         return "hello";
         // return this.userService.getUser(username);
 
+    }
+
+    //update existing user
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User updatedUser ){
+        try{
+            User user=userService.updateUser(userId,updatedUser);
+            return ResponseEntity.ok(user);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     //delete user by id

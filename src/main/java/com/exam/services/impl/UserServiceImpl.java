@@ -45,6 +45,23 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findByUsername(username);
     }
 
+    //updating the existing user
+    @Override
+    public User updateUser(Long userId, User updatedUser) throws Exception {
+        // Fetch the user by ID
+        User existingUser = this.userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found with id: " + userId));
+
+        // Update the fields of the existing user
+        existingUser.setUsername(updatedUser.getUsername());
+        existingUser.setPassword(updatedUser.getPassword());
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        // Save and return the updated user
+        return this.userRepository.save(existingUser);
+    }
+
+
     @Override
     public void deleteUser(Long userId) {
         this.userRepository.deleteById(userId);
